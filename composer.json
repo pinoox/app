@@ -11,7 +11,7 @@
     "pinoox/pincore": "^3.0"
   },
   "require-dev": {
-    "pinoox/pinx-cli": "^1.0"
+    "pinoox/pinx-cli": "^1.1.4"
   },
   "scripts": {
     "post-root-package-install": [
