@@ -3,7 +3,7 @@
 /node_modules/
 /storage/*
 !/storage/.gitkeep
-/pinker/state/
+/pinker/
 /pinker/wizard_tmp/
 /export/
 .env
