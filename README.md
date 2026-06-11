@@ -37,10 +37,28 @@ my-shop/
 ├── app.php              ← package name & pinx settings
 ├── Controller/ Model/ routes/ theme/
 ├── resource/            ← app icon & static assets (default icon included)
-├── config/              ← router + registry (`/` → your app)
+├── platform/            ← local host + deploy layer (excluded from .pinx build)
+│   ├── apps.config.php
+│   ├── app-router.config.php
+│   ├── domain.config.php
+│   ├── pinoox.config.php
+│   └── launcher/        ← bootstrap + dev server router
+├── config/              ← app-level config only (app.config.php, services, …)
 ├── bin/pinx
 └── vendor/pinoox/pincore
 ```
+
+### Config layers (do not mix)
+
+| Layer | Path | Examples |
+|-------|------|----------|
+| **Pincore (framework)** | `vendor/pinoox/pincore/config/` | database, paths — read-only |
+| **Project deploy + dev host** | `platform/` | `apps.config.php`, `app-router.config.php`, `domain.config.php`, `launcher/` |
+| **Your app** | `config/` | `app.config.php`, `query_route.config.php`, custom `*.config.php` |
+
+`platform/` is **not** included in `pinx build` output — it is only for local development and routing on a single-app checkout. Production installs use the full Pinoox platform's own config.
+
+`PINOOX_PROJECT_CONFIG_PATH=platform` in `.env` points pincore at this folder (default when `platform/` exists).
 
 ## Deploy to production platform
 

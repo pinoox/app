@@ -2,6 +2,6 @@
 
 return [
     'packages' => [
-        '__PINX_PACKAGE__' => '~',
+        'com_pinoox_app' => '~',
     ],
 ];

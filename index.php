@@ -1,3 +1,3 @@
 <?php
 
-include_once __DIR__ . '/launcher/bootstrap.php';
+include_once __DIR__ . '/platform/launcher/bootstrap.php';

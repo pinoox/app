@@ -26,10 +26,25 @@ jobs:
       - name: Prepare CI app identity
         run: |
           PKG=com_pinoox_app
-          sed -i "s/__PINX_PACKAGE__/${PKG}/g" app.php config/apps.config.php config/app-router.config.php .env.example
-          sed -i 's/__PINX_DISPLAY_NAME__/Pinoox App/g' app.php .env.example
-          sed -i 's/__PINX_DEVELOPER__/Pinoox/g' app.php
-          sed -i 's/__PINX_DESCRIPTION__/Pinoox App — CI smoke test/g' app.php
+          NAME='Pinoox App'
+          DEV='Pinoox'
+          DESC='Pinoox App — CI smoke test'
+          for key_val in \
+            "__PINX_PACKAGE__:${PKG}" \
+            "__PINX_DISPLAY_NAME__:${NAME}" \
+            "__PINX_DEVELOPER__:${DEV}" \
+            "__PINX_DESCRIPTION__:${DESC}"; do
+            key="${key_val%%:*}"
+            val="${key_val#*:}"
+            grep -rlF "$key" . \
+              --include='*.php' \
+              --include='.env.example' \
+              --exclude-dir=vendor \
+              --exclude-dir=pinker \
+              --exclude-dir=export \
+              --exclude-dir=node_modules \
+              | xargs -r sed -i "s|${key}|${val}|g"
+          done
 
       - name: Environment
         run: cp .env.example .env
