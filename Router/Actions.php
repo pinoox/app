@@ -1,6 +1,6 @@
 <?php
 
-namespace App\__PINX_PACKAGE__\Router;
+namespace App\com_pinoox_app\Router;
 
 final class Actions
 {

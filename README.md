@@ -12,6 +12,8 @@ pinx setup
 pinx dev
 ```
 
+The template ships with default identity `com_pinoox_app` / **Pinoox App** so it runs immediately after install. To use your own package name, run `pinx init --package=com_vendor_app --force` or edit `app.php`, `platform/`, namespaces under `Controller/` / `Router/`, and `routes/`.
+
 Or with global pinx CLI:
 
 ```bash

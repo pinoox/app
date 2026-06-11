@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'package' => '__PINX_PACKAGE__',
-    'name' => '__PINX_DISPLAY_NAME__',
-    'description' => '__PINX_DESCRIPTION__',
-    'developer' => '__PINX_DEVELOPER__',
+    'package' => 'com_pinoox_app',
+    'name' => 'Pinoox App',
+    'description' => 'Pinoox App starter — built with Pinoox',
+    'developer' => 'Pinoox App Developer',
     'icon' => 'resource/icon.png',
     'version-name' => '1.0.0',
     'version-code' => 1,

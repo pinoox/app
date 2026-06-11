@@ -23,29 +23,6 @@ jobs:
       - name: Install dependencies
         run: composer install --no-interaction --prefer-dist
 
-      - name: Prepare CI app identity
-        run: |
-          PKG=com_pinoox_app
-          NAME='Pinoox App'
-          DEV='Pinoox'
-          DESC='Pinoox App — CI smoke test'
-          for key_val in \
-            "__PINX_PACKAGE__:${PKG}" \
-            "__PINX_DISPLAY_NAME__:${NAME}" \
-            "__PINX_DEVELOPER__:${DEV}" \
-            "__PINX_DESCRIPTION__:${DESC}"; do
-            key="${key_val%%:*}"
-            val="${key_val#*:}"
-            grep -rlF "$key" . \
-              --include='*.php' \
-              --include='.env.example' \
-              --exclude-dir=vendor \
-              --exclude-dir=pinker \
-              --exclude-dir=export \
-              --exclude-dir=node_modules \
-              | xargs -r sed -i "s|${key}|${val}|g"
-          done
-
       - name: Environment
         run: cp .env.example .env
 
