@@ -7,7 +7,7 @@
   "require": {
     "php": "^8.1",
     "ext-zip": "*",
-    "pinoox/pincore": "^3.0"
+    "pinoox/pincore": "^3.1"
   },
   "require-dev": {
     "pinoox/pinx-cli": "^1.2"

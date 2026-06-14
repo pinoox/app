@@ -44,7 +44,7 @@ jobs:
           echo "artifact=$ARTIFACT" >> "$GITHUB_OUTPUT"
 
       - name: Build pinx package
-        run: php bin/pinx build --yes --output=${{ steps.meta.outputs.artifact }}
+        run: php bin/pinx build --yes --output="${{ steps.meta.outputs.artifact }}"
         env:
           PINX_DEV: '1'
           PINX_PACKAGE: ${{ steps.meta.outputs.package }}
