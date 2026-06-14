@@ -1,0 +1,55 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  pinx:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name }}
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: zip, mbstring
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Environment
+        run: cp .env.example .env
+
+      - name: Resolve package metadata
+        id: meta
+        run: |
+          PACKAGE=$(php -r "echo (require 'app.php')['package'];")
+          VERSION=$(php -r "echo (require 'app.php')['version-name'];")
+          REPO_NAME="${GITHUB_REPOSITORY##*/}"
+          if [[ "$VERSION" == v* ]]; then
+            VERSION_TAG="$VERSION"
+          else
+            VERSION_TAG="v${VERSION}"
+          fi
+          ARTIFACT="export/${REPO_NAME} ${VERSION_TAG}.pinx"
+          echo "package=$PACKAGE" >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "artifact=$ARTIFACT" >> "$GITHUB_OUTPUT"
+
+      - name: Build pinx package
+        run: php bin/pinx build --yes --output=${{ steps.meta.outputs.artifact }}
+        env:
+          PINX_DEV: '1'
+          PINX_PACKAGE: ${{ steps.meta.outputs.package }}
+
+      - name: Upload .pinx to release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload "${{ github.event.release.tag_name }}" "${{ steps.meta.outputs.artifact }}" --clobber
