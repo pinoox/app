@@ -86,3 +86,128 @@ cd packages/app
 composer config repositories.pinx-cli path ../pinx-cli
 composer require pinoox/pinx-cli:@dev
 ```
+
+## GitHub releases
+
+This template includes `.github/workflows/release.yml`. When you **publish** a GitHub Release, CI builds a `.pinx` install package and attaches it to that release.
+
+Release asset name: `{repo-name} v{version}.pinx` — for example `app v1.0.0.pinx` on `pinoox/app`. If `version-name` in `app.php` already starts with `v`, it is not duplicated.
+
+Suggested flow:
+
+```bash
+# 1. Bump version locally (optional)
+pinx release --yes
+
+# 2. Commit app.php version change
+git add app.php
+git commit -m "chore: release 1.0.1"
+
+# 3. Tag and push
+git tag v1.0.1
+git push origin main --tags
+
+# 4. GitHub → Releases → Publish
+```
+
+Make sure `version-name` in `app.php` matches the release before you tag. CI does not bump versions — it builds from the tagged commit.
+
+## Package signing
+
+Pinoox signs `.pinx` packages with **Ed25519** (PHP `sodium`). A signed build adds `signature.json` inside the archive. On install, the platform can verify integrity and block updates from a different publisher.
+
+### Generate a signing key (once)
+
+```bash
+php vendor/bin/pincore pinx:sign-keygen com_pinoox_app
+# optional: --key-id=pinoox:app
+```
+
+Default key path for this layout:
+
+```text
+pinx/sign.key.json   ← never commit this file
+```
+
+Add to `.gitignore`:
+
+```text
+/pinx/sign.key.json
+```
+
+Publish the **public key** (from `sign.key.json`) in your README or docs. Keep the **secret key** local and in CI secrets only.
+
+### Enable signing in `app.php`
+
+```php
+'pinx' => [
+    'type' => 'app',
+    'minpin' => 3,
+    'sign' => [
+        'enabled' => true,
+        'key' => 'pinx/sign.key.json',
+        'key_id' => 'pinoox:app',
+        'require' => false,
+    ],
+],
+```
+
+Then build locally:
+
+```bash
+pinx build --sign --yes
+# or
+pinx release --sign --yes
+```
+
+### Sign in GitHub Actions
+
+Store the full contents of `sign.key.json` as repository secret `PINX_SIGN_KEY`, then extend the release workflow:
+
+```yaml
+- uses: shivammathur/setup-php@v2
+  with:
+    php-version: '8.2'
+    extensions: zip, mbstring, sodium
+
+- name: Prepare signing key
+  if: ${{ secrets.PINX_SIGN_KEY != '' }}
+  run: |
+    mkdir -p pinx
+    printf '%s' "${{ secrets.PINX_SIGN_KEY }}" > pinx/sign.key.json
+
+- name: Build pinx package
+  run: php bin/pinx build --yes --sign --output=${{ steps.meta.outputs.artifact }}
+```
+
+If `pinx.sign.enabled` is `true` in `app.php`, `--sign` is optional — the build signs automatically when the key file exists.
+
+### Trust on the install platform
+
+| Level | Setting | Meaning |
+|-------|---------|---------|
+| Default | `PINX_VERIFY=true` | Verify signature when `signature.json` is present |
+| Official market | `trusted_keys` in `pinx.config.php` | Only allow known publisher public keys |
+| Strict | `PINX_REQUIRE_SIGNATURE=true` | Reject unsigned packages |
+
+Example for a trusted publisher on a full Pinoox platform:
+
+```php
+// vendor/pinoox/pincore/config/pinx.config.php
+'trusted_keys' => [
+    'com_pinoox_app' => 'BASE64_PUBLIC_KEY_FROM_sign.key.json',
+],
+```
+
+### What signing guarantees
+
+- **Integrity** — manifest and payload were not tampered with after signing.
+- **Publisher continuity** — updates must come from the same key (stored in `.pinx/identity.json` on the installed app).
+
+Without `trusted_keys`, anyone can ship a signed package with their own key. For official releases, publish your public key and register it on target platforms.
+
+### Do not
+
+- Commit `pinx/sign.key.json` to a public repository.
+- Put `secret_key` in `app.php`, `.env`, or workflow logs.
+- Rotate signing keys without documenting the new `key_id` and fingerprint in release notes.
