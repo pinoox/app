@@ -17,7 +17,7 @@ jobs:
       - uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
-          extensions: mysqli, zip, mbstring
+          extensions: zip, mbstring
           coverage: none
 
       - name: Install dependencies
