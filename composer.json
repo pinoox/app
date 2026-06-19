@@ -5,7 +5,7 @@
   "license": "MIT",
   "keywords": ["pinoox", "hmvc", "skeleton", "pinx"],
   "require": {
-    "php": "^8.1",
+    "php": "^8.2",
     "ext-zip": "*",
     "pinoox/pincore": "^3.1"
   },
