@@ -1,4 +1,15 @@
 #!/usr/bin/env php
 <?php
 
-require __DIR__ . '/../vendor/pinoox/pinx-cli/bin/pinx';
+$projectRoot = dirname(__DIR__);
+$corePathResolver = $projectRoot . '/platform/launcher/core-path.php';
+
+if (is_file($corePathResolver)) {
+    require_once $corePathResolver;
+}
+
+$pinxCliPath = function_exists('pinoox_resolve_configured_pinx_cli_path')
+    ? pinoox_resolve_configured_pinx_cli_path($projectRoot)
+    : $projectRoot . '/vendor/pinoox/pinx-cli';
+
+require rtrim($pinxCliPath, '/\\') . '/bin/pinx';
