@@ -11,6 +11,8 @@ pinx migrate
 pinx dev
 ```
 
+While `pinx dev` is running, open `/~studio` on the same local server for the graphical database studio.
+
 New projects include a minimal `.env`:
 
 ```dotenv
@@ -34,7 +36,10 @@ pinx new my-shop --package=com_acme_shop
 | Command | Description |
 |---------|-------------|
 | `pinx setup` | Migrate platform + app, run seeders |
+| `pinx sync` | Add missing single-app support files |
+| `pinx repair` | Repair this folder so it runs as a Pinx single-app project |
 | `pinx dev` | Local HTTP server (and Vite when configured) |
+| `pinx studio` | Standalone local browser dashboard for database tables, schema, and rows |
 | `pinx migrate` | App migrations |
 | `pinx build` | Build `export/*.pinx` for platform install |
 | `pinx release` | Bump version + build signed-ready package |
