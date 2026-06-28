@@ -14,7 +14,7 @@
   },
   "scripts": {
     "post-root-package-install": [
-      "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+      "@php -r \"file_exists('.env') || file_put_contents('.env', 'APP_ENV=development'.PHP_EOL.'DB_CONNECTION=devdb'.PHP_EOL);\""
     ],
     "dev": "@php bin/pinx dev",
     "build": "@php bin/pinx build --yes",

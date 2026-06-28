@@ -7,10 +7,18 @@ Single-app Pinoox project for [Pinoox](https://pinoox.com). Your project root **
 ```bash
 composer create-project pinoox/app my-shop
 cd my-shop
-cp .env.example .env
-pinx setup
+pinx migrate
 pinx dev
 ```
+
+New projects include a minimal `.env`:
+
+```dotenv
+APP_ENV=development
+DB_CONNECTION=devdb
+```
+
+Use `.env.example` as the full reference when you want to override defaults or connect MySQL/PostgreSQL/SQLite.
 
 The template ships with default identity `com_pinoox_app` / **Pinoox App** so it runs immediately after install. To use your own package name, run `pinx init --package=com_vendor_app --force` or edit `app.php`, `platform/`, namespaces under `Controller/` / `Router/`, and `routes/`.
 
