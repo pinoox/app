@@ -11,7 +11,7 @@ pinx migrate
 pinx dev
 ```
 
-While `pinx dev` is running, open `/~studio` on the same local server for the graphical database studio.
+While `pinx dev` is running, open `/~inspector` on the same local server for Pinx Inspector. Inspector is installed as a `require-dev` package and is not needed in production.
 
 New projects include a minimal `.env`:
 
@@ -21,6 +21,7 @@ DB_CONNECTION=devdb
 ```
 
 Use `.env.example` as the full reference when you want to override defaults or connect MySQL/PostgreSQL/SQLite.
+DevDB is installed from Packagist as `pinoox/devdb` in `require-dev`, so local projects can run migrations and models immediately without setting up a database server. For production, set a real database connection and install dependencies without dev packages.
 
 The template ships with default identity `com_pinoox_app` / **Pinoox App** so it runs immediately after install. To use your own package name, run `pinx init --package=com_vendor_app --force` or edit `app.php`, `platform/`, namespaces under `Controller/` / `Router/`, and `routes/`.
 
@@ -39,7 +40,7 @@ pinx new my-shop --package=com_acme_shop
 | `pinx sync` | Add missing single-app support files |
 | `pinx repair` | Repair this folder so it runs as a Pinx single-app project |
 | `pinx dev` | Local HTTP server (and Vite when configured) |
-| `pinx studio` | Standalone local browser dashboard for database tables, schema, and rows |
+| `pinx inspector` | Standalone local browser dashboard for database tables, schema, routes, logs, and runtime health |
 | `pinx migrate` | App migrations |
 | `pinx build` | Build `export/*.pinx` for platform install |
 | `pinx release` | Bump version + build signed-ready package |
