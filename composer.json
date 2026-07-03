@@ -10,19 +10,10 @@
     "pinoox/pincore": "^3.1"
   },
   "require-dev": {
-    "pinoox/devdb": ">=0.3 <1.0",
+    "pinoox/devdb": "^0.3 || ^1.0",
     "pinoox/pinx-cli": "^1.2",
     "pinoox/pinx-inspector": "^1.0"
   },
-  "repositories": [
-    {
-      "type": "path",
-      "url": "../pinx-inspector",
-      "options": {
-        "symlink": true
-      }
-    }
-  ],
   "scripts": {
     "post-root-package-install": [
       "@php -r \"file_exists('.env') || file_put_contents('.env', 'APP_ENV=development'.PHP_EOL.'DB_CONNECTION=devdb'.PHP_EOL);\""

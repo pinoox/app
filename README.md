@@ -11,7 +11,7 @@ pinx migrate
 pinx dev
 ```
 
-While `pinx dev` is running, open `/~inspector` on the same local server for Pinx Inspector. Inspector is installed as a `require-dev` package and is not needed in production.
+While `pinx dev` is running, open `/~inspector` on the same local server for Pinx Inspector. Inspector is installed from Packagist as `pinoox/pinx-inspector` in `require-dev` and is not needed in production.
 
 New projects include a minimal `.env`:
 
