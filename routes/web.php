@@ -1,6 +1,11 @@
-<?php
-
-use App\com_pinoox_app\Router\Actions;
-use function Pinoox\Router\get;
-
-get('/')->actionName(Actions::HOME);
+<?php
+
+
+
+use App\com_pinoox_app\Controller\MainController;
+use function Pinoox\Router\get;
+
+
+
+get('/')->action([MainController::class, 'index'])->name('home');
+
