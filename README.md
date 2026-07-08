@@ -42,7 +42,7 @@ pinx new my-shop --package=com_acme_shop
 | `pinx dev` | Local HTTP server (and Vite when configured) |
 | `pinx inspector` | Standalone local browser dashboard for database tables, schema, routes, logs, and runtime health |
 | `pinx migrate` | App migrations |
-| `pinx build` | Build `export/*.pinx` for platform install |
+| `pinx build` | Build `~pinx/export/{package}/*.pinx` for platform install |
 | `pinx release` | Bump version + build signed-ready package |
 | `pinx doctor` | Check PHP, paths, and layout |
 

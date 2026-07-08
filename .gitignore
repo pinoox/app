@@ -5,6 +5,10 @@
 !/storage/.gitkeep
 /pinker/
 /pinker/wizard_tmp/
+/pinx
+.pinoox/
+/pinx/keys/
+/pinx/export/
 /export/
 .env
 .env.local
