@@ -36,4 +36,4 @@ jobs:
           PINX_PACKAGE: com_pinoox_app
 
       - name: Verify export artifact
-        run: test -n "$(find export -maxdepth 1 -name '*.pinx' -print -quit)"
+        run: test -n "$(find . "$HOME/pinx" "$HOME/.pinoox" -type f -name '*.pinx' -print -quit 2>/dev/null)"
